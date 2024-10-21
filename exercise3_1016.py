@@ -1,6 +1,5 @@
 from datasets import load_dataset
 import pandas as pd
-import pandas as pd
 
 dataset = load_dataset('mstz/titanic')
 df = pd.DataFrame(dataset['train'])
@@ -15,7 +14,7 @@ def get_median_age():
 
 def get_gender_count():
     # count the number of male and female passengers
-    pass
+    return len(df[df['is_male'] == True])
 
 def fill_nan_age_with_mean():
     # fill NaN age values with mean age
