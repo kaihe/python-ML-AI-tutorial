@@ -7,11 +7,11 @@ mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
 
 # Initialize video capture.
-cap = cv2.VideoCapture(r'data\Louis剪辑\L4S30.mp4')
+cap = cv2.VideoCapture('data/clark剪辑/C4S104.mp4')
 
 # Prepare to write the output video.
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
-out = cv2.VideoWriter('output_video.avi', fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # Change the video codec to mp4v
+out = cv2.VideoWriter('output_video.mp4', fourcc, 20.0, (int(cap.get(3)), int(cap.get(4))))  # Change the file extension to .mp4
 
 # Prepare to write the CSV file.
 csv_file = open('keypoints.csv', 'w')
@@ -32,8 +32,10 @@ while cap.isOpened():
 
     if results.pose_landmarks:
         landmarks = results.pose_landmarks.landmark
-
-        # Extract the required keypoints.
+        # landmarks is a list of landmarks, where each landmark is a dictionary with x, y, and z fields.
+        # z is the depth (distance from the camera) and is only available in 3D mode.
+        
+        # Extract the required keypoints output to a csv file.
         keypoints = {
             'shoulder': (landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER].x, landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER].y),
             'elbow': (landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW].x, landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW].y),
@@ -47,7 +49,7 @@ while cap.isOpened():
         }
 
         # Write keypoints to CSV.
-        csv_file.write(f"{frame_idx},{keypoints['shoulder'][0]},{keypoints['shoulder'][1]},{keypoints['elbow'][0]},{keypoints['elbow'][1]},{keypoints['wrist'][0]},{keypoints['wrist'][1]},{keypoints['hip'][0]},{keypoints['hip'][1]},{keypoints['knee'][0]},{keypoints['knee'][1]},{keypoints['ankle'][0]},{keypoints['ankle'][1]},{keypoints['foot'][0]},{keypoints['foot'][1]},{keypoints['eye'][0]},{keypoints['eye'][1]},{keypoints['ear'][0]},{keypoints['ear'][1]}\n")
+        csv_file.write(f"{frame_idx},{keypoints['shoulder'][0]:.2f},{keypoints['shoulder'][1]:.2f},{keypoints['elbow'][0]:.2f},{keypoints['elbow'][1]:.2f},{keypoints['wrist'][0]:.2f},{keypoints['wrist'][1]:.2f},{keypoints['hip'][0]:.2f},{keypoints['hip'][1]:.2f},{keypoints['knee'][0]:.2f},{keypoints['knee'][1]:.2f},{keypoints['ankle'][0]:.2f},{keypoints['ankle'][1]:.2f},{keypoints['foot'][0]:.2f},{keypoints['foot'][1]:.2f},{keypoints['eye'][0]:.2f},{keypoints['eye'][1]:.2f},{keypoints['ear'][0]:.2f},{keypoints['ear'][1]:.2f}\n")
 
         # Draw keypoints on the frame.
         for key, point in keypoints.items():
