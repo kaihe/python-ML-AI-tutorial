@@ -2,36 +2,6 @@ import cv2
 import numpy as np
 import mediapipe as mp
 
-def get_last_frame(video_path):
-    # Open the video file
-    cap = cv2.VideoCapture(video_path)
-    
-    # Check if the video opened successfully
-    if not cap.isOpened():
-        print("Error: Could not open video.")
-        return None
-    
-    # Get the total number of frames
-    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    
-    # Iterate over the frames in reverse order until a valid frame is found
-    for i in range(total_frames - 1, -1, -1):
-        # Set the position of the next frame to be read
-        cap.set(cv2.CAP_PROP_POS_FRAMES, i)
-        
-        # Read the frame
-        ret, frame = cap.read()
-        
-        if ret:
-            # Release the video capture object
-            cap.release()
-            return frame
-    
-    # Release the video capture object if no valid frame is found
-    cap.release()
-    print("Error: Could not read any valid frame.")
-    return None
-
 def calculate_angle(p1, p2, p3):
     # Convert points to numpy arrays
     p1 = np.array(p1)
