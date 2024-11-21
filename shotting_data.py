@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import pandas as pd
 
+# n11111s
 # Initialize MediaPipe Pose.
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose()
